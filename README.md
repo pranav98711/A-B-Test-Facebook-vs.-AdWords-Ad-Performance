@@ -1,4 +1,222 @@
-AB Testing (Marketing Campaigns)
+# AB Testing (Marketing Campaigns)
+
+Excited to share a project that I've worked on recently. Something similar to what I've done in my past professional experiences.
+
+## **Business Problem**
+We want our stakeholders to have a maximum Return on Investment (ROI) for their marketing campaigns. We have executed 2 ad campaigns, one for Facebook and other one is done for Google Adwords. The goal is to determine which platform yeilds better results in terms of clicks, conversions, and overall cost-effectiveness. Once we identify the best platform, we'll allocate our resources more efficiently to optimize the advertising strategies and deliver better result.
+
+## **Research Question**
+Which ad platform is more effective in terms of conversions, clicks, and overall cost-effectiveness?
+
+## **Data Description**
+The dataset compares the performance of Facebook and AdWords ad campaigns throughout 2019, with daily data resulting in 365 rows. It includes various performance metrics for each campaign, offering insights into their effectiveness and efficiency over time.
+
+Key features included in the dataset are as follows:- 
+
+- Date: The date corresponding to each row of campaign data, ranging from January 1st, 2019, to December 31st, 2019.
+- Ad Views: The number of times the ad was viewed.
+- Ad Clicks: The number of clicks received on the ad.
+- Ad Conversions: The number of conversions resulting from the ad.
+- Cost per Ad: The cost associated with running the Facebook ad campaign.
+- Click-Through Rate (CTR): The ratio of clicks to views, indicating the effectiveness of the ad in generating clicks.
+- Conversion Rate: The ratio of conversions to clicks, reflecting the effectiveness of the ad in driving desired actions.
+- Cost per Click (CPC): The average cost incurred per click on the ad.
+
+![image](https://github.com/user-attachments/assets/396c4cb9-22cc-42b7-ba27-90ae91102093)
+
+
+```
+# loading the dataset
+df = pd.read_csv('C:/Users/prana/Downloads/marketing_campaign.csv')
+df.head()
+```
+
+![image](https://github.com/user-attachments/assets/9871a10e-41ac-489a-9985-05c7e45b2b74)
+
+```
+df.dtypes
+```
+
+![image](https://github.com/user-attachments/assets/408bf536-bdae-4336-bb2f-3a085ec7634f)
+
+```
+df.describe()
+```
+
+![image](https://github.com/user-attachments/assets/2b1bf930-8005-40ae-abf6-d0f727354cf3)
+
+
+## **Comparing Campaigns performance**
+
+```
+# distribution of the clicks and conversions 
+plt.figure(figsize=(15,6))
+plt.subplot(1,2,1)
+plt.title('Facebook Ad Clicks')
+sns.histplot(df['Facebook Ad Clicks'], bins = 7, edgecolor = 'k', kde = True)
+plt.subplot(1,2,2)
+plt.title('Facebook Ad Conversions')
+sns.histplot(df['Facebook Ad Conversions'], bins = 7, edgecolor = 'k', kde = True)
+plt.show()
+
+
+plt.figure(figsize=(15,6))
+plt.subplot(1,2,1)
+plt.title('AdWords Ad Clicks')
+sns.histplot(df['AdWords Ad Clicks'], bins = 7, edgecolor = 'k', kde = True)
+plt.subplot(1,2,2)
+plt.title('AdWords Ad Conversions')
+sns.histplot(df['AdWords Ad Conversions'], bins = 7, edgecolor = 'k', kde = True)
+plt.show()
+```
+
+![Untitled](https://github.com/user-attachments/assets/2bf6bed9-2054-4891-ac89-a47972cd8723)
+
+
+
+All the histogram are showing somewhat symmetrical shape. This symmetrical shape suggests that the number of clicks and conversions is relatively evenly distributed. In other words, there are not many clicks or conversions that are outliers on either the high or low end.
+
+How frequently do we observe days with high numbers of conversions compared to days with low numbers of conversions?
+
+```
+# creating function to calculate the category for the conversions
+def create_conversion_category(conversion_col):
+    category = []
+    for conversion in df[conversion_col]:
+        if conversion < 6:
+            category.append('less than 6')
+        elif 6 <= conversion < 11:
+            category.append('6 - 10')
+        elif 11 <= conversion < 16:
+            category.append('10 - 15')
+        else:
+            category.append('more than 15')
+    return category
+
+# applying function of different campaign's conversions
+df['Facebook Conversion Category'] = create_conversion_category('Facebook Ad Conversions')
+df['AdWords Conversion Category'] = create_conversion_category('AdWords Ad Conversions')
+```
+
+```
+df[['Facebook Ad Conversions','Facebook Conversion Category','AdWords Ad Conversions','AdWords Conversion Category']].head()
+```
+
+![image](https://github.com/user-attachments/assets/ae220faa-96cf-4002-9b22-a37cc1db1907)
+
+```
+facebook = pd.DataFrame(df['Facebook Conversion Category'].value_counts()).reset_index().rename(columns = {'Facebook Conversion Category':'Category'})
+facebook
+```
+
+![image](https://github.com/user-attachments/assets/00ef8bce-1b7f-414a-9dbe-519a1f183b6c)
+
+```
+adwords = pd.DataFrame(df['AdWords Conversion Category'].value_counts()).reset_index().rename(columns = {'AdWords Conversion Category':'Category'})
+adwords
+```
+
+![image](https://github.com/user-attachments/assets/b398e7ed-9b3e-4dc9-bf65-3c3fcb4fc254)
+
+```
+category_df = pd.merge(facebook, adwords, on = 'Category', how = 'outer').fillna(0)
+category_df = category_df.iloc[[3,1,0,2]]
+category_df
+```
+
+![image](https://github.com/user-attachments/assets/10607557-d968-4d74-a63f-c68f94a5fb47)
+
+```
+X_axis = np.arange(len(category_df)) 
+X_axis = np.arange(len(category_df)) 
+plt.figure(figsize = (15,6))
+plt.bar(X_axis - 0.2, category_df['count_x'], 0.4, label = 'Facebook', color = '#03989E', linewidth = 1, edgecolor = 'k') 
+plt.bar(X_axis + 0.2, category_df['count_y'], 0.4, label = 'Adwords', color = '#A62372', linewidth = 1, edgecolor = 'k') 
+  
+plt.xticks(X_axis, category_df['Category']) 
+plt.xlabel("Conversion Category") 
+plt.ylabel("Number of days") 
+plt.title("Frequency of Daily Conversions by Conversion Categories", fontsize = 15) 
+plt.legend(fontsize = 15) 
+plt.show()
+```
+
+![Untitled](https://github.com/user-attachments/assets/98d08040-7878-4db3-93e9-4a7820481694)
+
+
+
+- The data suggests Facebook had more frequent higher conversion days than AdWords, which either had very low conversion rates (less than 6) or moderate ones (6 - 10).
+- There is a significant variance in the number of high-conversion days between two different campaigns.
+- The absence of any days with conversions between 10 - 15 and more than 15 in AdWords indicates a need to review what strategies were changed or what external factors could have influenced these numbers.
+
+Do more clicks on the ad really lead to more sales?
+
+```
+plt.figure(figsize=(15,6))
+plt.subplot(1,2,1)
+plt.title('Facebook')
+sns.scatterplot(x = df['Facebook Ad Clicks'],y = df['Facebook Ad Conversions'], color = '#03989E')
+plt.xlabel('Clicks')
+plt.ylabel('Conversions')
+plt.subplot(1,2,2)
+plt.title('AdWords')
+sns.scatterplot(x = df['AdWords Ad Clicks'],y = df['AdWords Ad Conversions'], color = '#03989E')
+plt.xlabel('Clicks')
+plt.ylabel('Conversions')
+plt.show()
+```
+
+![Untitled](https://github.com/user-attachments/assets/b1787729-490e-4387-9798-849f7ec931d5)
+
+```
+facebook_corr = df[['Facebook Ad Conversions','Facebook Ad Clicks']].corr()
+facebook_corr
+```
+
+![image](https://github.com/user-attachments/assets/820b04ab-830e-46f5-84f9-a3bab4bffc42)
+
+```
+adwords_corr = df[['AdWords Ad Conversions','AdWords Ad Clicks']].corr()
+adwords_corr
+```
+
+![image](https://github.com/user-attachments/assets/fb5ebb1d-46d4-40e8-aa76-153fc7d91004)
+
+```
+print('Correlation Coeff \n--------------')
+print('Facebook :',round(facebook_corr.values[0,1],2))
+print('AdWords : ',round(adwords_corr.values[0,1],2))
+```
+
+```
+Correlation Coeff 
+--------------
+Facebook : 0.87
+AdWords :  0.45
+```
+
+
+- A correlation coefficient of 0.87 indicates a strong positive linear relationship between clicks on Facebook ads and sales. This suggests that as the number of clicks on Facebook ads increases, sales tend to increase as well.
+- This strong correlation suggests that Facebook ads are highly effective in driving sales, as a large portion of the variation in sales can be explained by the variation in clicks on Facebook ads.
+- The strong correlation between clicks on Facebook ads and sales suggests that Facebook advertising is highly effective in driving sales for the business. Increasing investment in Facebook ads or optimizing their performance could potentially lead to even higher sales.
+- A correlation coefficient of 0.45 indicates a moderate positive linear relationship between clicks on AdWords ads and sales. While there is still a positive relationship, it is not as strong as with Facebook ads.
+- The moderate correlation between clicks on AdWords ads and sales indicates that while AdWords advertising does contribute to sales, its effectiveness may be influenced by other factors. Further analysis is needed to identify these factors and optimize AdWords campaigns accordingly.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## **Hypothesis Testing**
