@@ -22,7 +22,7 @@ Key features included in the dataset are as follows:-
 - Conversion Rate: The ratio of conversions to clicks, reflecting the effectiveness of the ad in driving desired actions.
 - Cost per Click (CPC): The average cost incurred per click on the ad.
 
-![image](https://github.com/user-attachments/assets/c5f729bd-c5d4-4178-927c-705ba13ac5df)
+![image](https://github.com/user-attachments/assets/36de1950-b318-4904-bc00-5f443a04e0aa)
 
 ```
 # loading the dataset
