@@ -1,6 +1,6 @@
 # AB Testing - Facebook vs. AdWords Ad Performance
 
-Excited to share a project that I've worked on recently. Something similar to what I've done in my past professional experiences.
+Excited to share a project that I've recently worked on. It closely aligns with my previous professional experiences.
 
 ## **Business Problem**
 We want our stakeholders to have a maximum Return on Investment (ROI) for their marketing campaigns. We have executed 2 ad campaigns, one for Facebook and other one is done for Google Adwords. The goal is to determine which platform yeilds better results in terms of clicks, conversions, and overall cost-effectiveness. Once we identify the best platform, we'll allocate our resources more efficiently to optimize the advertising strategies and deliver better result.
