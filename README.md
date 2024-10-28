@@ -1,4 +1,4 @@
-# AB Testing - Facebook vs. AdWords Ad Performance
+# A/B Testing - Facebook vs. AdWords Ad Performance
 
 Excited to share a project that I've recently worked on. It closely aligns with my previous professional experiences.
 
