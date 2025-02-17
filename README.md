@@ -1,4 +1,3 @@
-# A/B Testing - Facebook vs. AdWords Ad Performance
 
 Excited to share a project that I've recently worked on. It closely aligns with my previous professional experiences.
 
@@ -23,6 +22,7 @@ Key features included in the dataset are as follows:-
 - Cost per Click (CPC): The average cost incurred per click on the ad.
 
 ![image](https://github.com/user-attachments/assets/36de1950-b318-4904-bc00-5f443a04e0aa)
+
 
 ```
 # loading the dataset
@@ -70,6 +70,8 @@ plt.show()
 ```
 
 ![Untitled](https://github.com/user-attachments/assets/2bf6bed9-2054-4891-ac89-a47972cd8723)
+
+![image](https://github.com/user-attachments/assets/d7d1eb6c-0700-4ec3-84db-5560ca2b0d33)
 
 
 
